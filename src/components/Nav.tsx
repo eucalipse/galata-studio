@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Logo } from './Logo';
 import { LanguageSwitch } from './LanguageSwitch';
 
-export function Nav() {
+export function Nav({ onAddagioPage = false }: { onAddagioPage?: boolean }) {
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -16,11 +16,13 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const prefix = onAddagioPage ? '/' : '';
   const links = [
-    { href: '#services', label: t.nav.services },
-    { href: '#work', label: t.nav.work },
-    { href: '#why', label: t.nav.why },
-    { href: '#process', label: t.nav.process },
+    { href: `${prefix}#services`, label: t.nav.services },
+    { href: `${prefix}#work`, label: t.nav.work },
+    { href: `${prefix}#why`, label: t.nav.why },
+    { href: `${prefix}#process`, label: t.nav.process },
+    { href: '/addagio', label: 'Addagio' },
   ];
 
   const solid = scrolled || open;
@@ -32,7 +34,7 @@ export function Nav() {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between md:h-20">
-        <a href="#top" className="focus-ring rounded-md" aria-label="Galata Studio">
+        <a href={onAddagioPage ? '/' : '#top'} className="focus-ring rounded-md" aria-label="Galata Studio">
           <Logo />
         </a>
 
@@ -50,7 +52,7 @@ export function Nav() {
 
         <div className="hidden items-center gap-5 lg:flex">
           <LanguageSwitch />
-          <a href="#contact" className="btn-primary !py-2.5 !px-5">
+          <a href={`${prefix}#contact`} className="btn-primary !py-2.5 !px-5">
             {t.nav.cta}
           </a>
         </div>
@@ -95,7 +97,7 @@ export function Nav() {
               </ul>
               <div className="mt-6 flex items-center justify-between gap-4">
                 <LanguageSwitch />
-                <a href="#contact" onClick={() => setOpen(false)} className="btn-primary">
+                <a href={`${prefix}#contact`} onClick={() => setOpen(false)} className="btn-primary">
                   {t.nav.cta}
                 </a>
               </div>

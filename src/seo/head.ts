@@ -4,45 +4,41 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').repl
 const ld = (o: object) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
 const abs = (p: string) => `${SITE_URL}${p}`;
 
-/** Static <head> tags for the single prerendered page (title, description, canonical, OG, JSON-LD). */
-export function headTags(): string {
-  const title = `${site.name} | Web Design & Landing Page Agency in Istanbul`;
-  const description = 'Web design and landing-page agency in Galata, Istanbul. Bilingual Turkish/English sites for spas, clinics, tattoo studios and model agencies.';
-  const url = abs('/');
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#business`,
+  name: site.name,
+  url: abs('/'),
+  image: abs('/og.jpg'),
+  telephone: site.phone,
+  email: site.email,
+  priceRange: '$$',
+  foundingDate: String(site.founded),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.street,
+    addressLocality: 'İstanbul',
+    addressRegion: 'Beyoğlu',
+    addressCountry: 'TR',
+  },
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
+  sameAs: ['https://eucalipse.com'],
+};
+
+function baseTags({
+  title,
+  description,
+  path,
+  jsonLd,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  jsonLd: object[];
+}): string {
+  const url = abs(path);
   const image = abs('/og.jpg');
-
-  const business = {
-    '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    '@id': `${SITE_URL}/#business`,
-    name: site.name,
-    url,
-    image,
-    telephone: site.phone,
-    email: site.email,
-    description,
-    priceRange: '$$',
-    foundingDate: String(site.founded),
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: site.street,
-      addressLocality: 'İstanbul',
-      addressRegion: 'Beyoğlu',
-      addressCountry: 'TR',
-    },
-    areaServed: { '@type': 'Place', name: 'Worldwide' },
-    sameAs: ['https://eucalipse.com'],
-  };
-
-  const website = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    '@id': `${SITE_URL}/#website`,
-    name: site.name,
-    url,
-    publisher: { '@id': `${SITE_URL}/#business` },
-  };
-
   return [
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(description)}">`,
@@ -58,7 +54,44 @@ export function headTags(): string {
     `<meta property="og:locale" content="tr_TR">`,
     `<meta property="og:locale:alternate" content="en_US">`,
     `<meta name="twitter:card" content="summary_large_image">`,
-    ld(business),
-    ld(website),
+    ...jsonLd.map(ld),
   ].join('\n    ');
+}
+
+/** Static <head> tags for the home page (title, description, canonical, OG, JSON-LD). */
+export function headTags(): string {
+  const description = 'Web design and landing-page agency in Galata, Istanbul. Bilingual Turkish/English sites for spas, clinics, tattoo studios and model agencies.';
+  const website = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: site.name,
+    url: abs('/'),
+    publisher: { '@id': `${SITE_URL}/#business` },
+  };
+  return baseTags({
+    title: `${site.name} | Web Design & Landing Page Agency in Istanbul`,
+    description,
+    path: '/',
+    jsonLd: [{ ...business, description }, website],
+  });
+}
+
+/** Static <head> tags for the /addagio partner page. */
+export function addagioHeadTags(): string {
+  const description = 'Galata Studio is an Addagio partner agency: every site we build comes natively wired to the Addagio booking platform, with 6 months free for our clients.';
+  const offer = {
+    '@context': 'https://schema.org',
+    '@type': 'Offer',
+    '@id': `${SITE_URL}/addagio#offer`,
+    name: '6 months of Addagio free for Galata Studio clients',
+    url: abs('/addagio'),
+    seller: { '@id': `${SITE_URL}/#business` },
+  };
+  return baseTags({
+    title: `Addagio Booking, Built In | ${site.name}`,
+    description,
+    path: '/addagio',
+    jsonLd: [{ ...business, description }, offer],
+  });
 }

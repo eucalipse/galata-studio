@@ -1,16 +1,20 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { App } from './App';
-import { headTags } from './seo/head';
+import { headTags, addagioHeadTags } from './seo/head';
 import { SITE_URL } from './data/site';
 
 export { SITE_URL };
 
-/** Single page, single entry point — language toggle is client-side only. */
+/** Two static routes, prerendered separately for SEO — language toggle stays client-side only. */
 export function getRoutes() {
-  return [{ url: '/', dir: 'ltr' as const }];
+  return [
+    { url: '/', dir: 'ltr' as const },
+    { url: '/addagio', dir: 'ltr' as const },
+  ];
 }
 
-export function render() {
-  return { html: renderToString(<App />), head: headTags() };
+export function render(path: string = '/') {
+  const head = path.replace(/\/$/, '') === '/addagio' ? addagioHeadTags() : headTags();
+  return { html: renderToString(<App path={path} />), head };
 }
