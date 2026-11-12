@@ -95,3 +95,45 @@ export function addagioHeadTags(): string {
     jsonLd: [{ ...business, description }, offer],
   });
 }
+
+/** Static <head> tags for the /addagio/turkey localized partner page. */
+export function addagioTurkeyHeadTags(): string {
+  const description = 'Galata Studio, Addagio’nun Türkiye’deki ajans partneridir. Randevu alan işletmeler için sitenizi Addagio’ya baştan entegre kuruyoruz — ilk 6 ay ücretsiz.';
+  const offer = {
+    '@context': 'https://schema.org',
+    '@type': 'Offer',
+    '@id': `${SITE_URL}/addagio/turkey#offer`,
+    name: 'Galata Studio müşterileri için 6 ay ücretsiz Addagio',
+    url: abs('/addagio/turkey'),
+    seller: { '@id': `${SITE_URL}/#business` },
+    areaServed: { '@type': 'Country', name: 'Türkiye' },
+  };
+  return baseTags({
+    title: `Addagio Rezervasyon Sistemi | ${site.name} Türkiye`,
+    description,
+    path: '/addagio/turkey',
+    jsonLd: [{ ...business, description }, offer],
+  });
+}
+
+/** Static <head> tags for the Addagio partnership announcement post. */
+export function blogAddagioPartnershipHeadTags(): string {
+  const description = 'Galata Studio is now an official Addagio agency partner — every site we build comes natively wired to Addagio booking, with 6 months free for our clients.';
+  const article = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${SITE_URL}/blog/addagio-partnership#article`,
+    headline: 'Galata Studio is now an official Addagio agency partner',
+    description,
+    url: abs('/blog/addagio-partnership'),
+    datePublished: '2026-11-12',
+    author: { '@id': `${SITE_URL}/#business` },
+    publisher: { '@id': `${SITE_URL}/#business` },
+  };
+  return baseTags({
+    title: `Galata Studio × Addagio Partnership | ${site.name}`,
+    description,
+    path: '/blog/addagio-partnership',
+    jsonLd: [{ ...business, description }, article],
+  });
+}

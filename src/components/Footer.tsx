@@ -12,7 +12,7 @@ const SOCIALS: { name: SocialName; label: string; href: string }[] = [
   { name: 'dribbble', label: 'Dribbble', href: 'https://dribbble.com/galatastudio' },
 ];
 
-export function Footer() {
+export function Footer({ hideLanguageSwitch = false }: { hideLanguageSwitch?: boolean }) {
   const { t } = useLanguage();
   const f = t.footer;
   return (
@@ -53,13 +53,20 @@ export function Footer() {
                 </a>
               </li>
             ))}
+            <li>
+              <a href="/addagio" className="focus-ring inline-flex items-center gap-3 rounded text-cream/90 transition-colors duration-150 ease-out hover:text-gold-soft">
+                Addagio
+              </a>
+            </li>
           </ul>
         </div>
 
-        <div className="lg:col-span-2">
-          <h2 className="text-sm text-mist">{f.language}</h2>
-          <LanguageSwitch className="mt-4" />
-        </div>
+        {!hideLanguageSwitch && (
+          <div className="lg:col-span-2">
+            <h2 className="text-sm text-mist">{f.language}</h2>
+            <LanguageSwitch className="mt-4" />
+          </div>
+        )}
       </div>
 
       <div className="border-t border-line">

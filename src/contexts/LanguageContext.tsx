@@ -12,17 +12,29 @@ const STORAGE_KEY = 'galata-lang';
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children, defaultLang = 'tr' }: { children: React.ReactNode; defaultLang?: Lang }) {
-  const [lang, setLang] = useState<Lang>(() => {
+export function LanguageProvider({
+  children,
+  defaultLang = 'tr',
+  lockedLang,
+}: {
+  children: React.ReactNode;
+  defaultLang?: Lang;
+  /** When set, the page never switches language (e.g. a locale-specific route like /addagio/turkey). */
+  lockedLang?: Lang;
+}) {
+  const [lang, setLangState] = useState<Lang>(() => {
+    if (lockedLang) return lockedLang;
     if (typeof window === 'undefined') return defaultLang;
     const stored = window.localStorage.getItem(STORAGE_KEY);
     return stored === 'tr' || stored === 'en' ? stored : defaultLang;
   });
 
+  const setLang = lockedLang ? () => {} : setLangState;
+
   useEffect(() => {
     document.documentElement.lang = lang;
-    window.localStorage.setItem(STORAGE_KEY, lang);
-  }, [lang]);
+    if (!lockedLang) window.localStorage.setItem(STORAGE_KEY, lang);
+  }, [lang, lockedLang]);
 
   const value = useMemo(() => ({ lang, setLang, t: copy[lang] }), [lang]);
 

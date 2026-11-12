@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Logo } from './Logo';
 import { LanguageSwitch } from './LanguageSwitch';
 
-export function Nav({ onAddagioPage = false }: { onAddagioPage?: boolean }) {
+export function Nav({ onAddagioPage = false, hideLanguageSwitch = false }: { onAddagioPage?: boolean; hideLanguageSwitch?: boolean }) {
   const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -51,7 +51,7 @@ export function Nav({ onAddagioPage = false }: { onAddagioPage?: boolean }) {
         </nav>
 
         <div className="hidden items-center gap-5 lg:flex">
-          <LanguageSwitch />
+          {!hideLanguageSwitch && <LanguageSwitch />}
           <a href={`${prefix}#contact`} className="btn-primary !py-2.5 !px-5">
             {t.nav.cta}
           </a>
@@ -96,7 +96,7 @@ export function Nav({ onAddagioPage = false }: { onAddagioPage?: boolean }) {
                 ))}
               </ul>
               <div className="mt-6 flex items-center justify-between gap-4">
-                <LanguageSwitch />
+                {!hideLanguageSwitch && <LanguageSwitch />}
                 <a href={`${prefix}#contact`} onClick={() => setOpen(false)} className="btn-primary">
                   {t.nav.cta}
                 </a>
