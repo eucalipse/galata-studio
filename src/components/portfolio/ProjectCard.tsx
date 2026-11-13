@@ -6,12 +6,11 @@ import { SitePreview } from './SitePreview';
 
 export function ProjectCard({ project }: { project: Project }) {
   const { t, lang } = useLanguage();
+  const detailHref = `/work/${project.id}`;
   return (
     <article className="group flex w-full flex-col">
       <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={detailHref}
         tabIndex={-1}
         aria-hidden="true"
         className="block overflow-hidden rounded-xl border border-line transition-colors duration-200 ease-out group-hover:border-gold/40"
@@ -29,9 +28,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-mist">{project.description[lang]}</p>
 
       <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={detailHref}
         className="focus-ring mt-auto inline-flex w-fit items-center gap-2 rounded pt-5 text-sm text-cream/80 transition-colors duration-150 ease-out hover:text-gold-soft"
       >
         {t.portfolio.visit}

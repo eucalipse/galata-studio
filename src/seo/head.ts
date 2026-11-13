@@ -1,4 +1,5 @@
 import { site, SITE_URL } from '../data/site';
+import type { Project } from '../types/content';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const ld = (o: object) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
@@ -135,5 +136,43 @@ export function blogAddagioPartnershipHeadTags(): string {
     description,
     path: '/blog/addagio-partnership',
     jsonLd: [{ ...business, description }, article],
+  });
+}
+
+const categoryLabelEn: Record<Project['category'], string> = {
+  spa: 'Spa & Beauty',
+  tattoo: 'Tattoo Studio',
+  medical: 'Medical & Clinic',
+  model: 'Model Agency',
+};
+
+/** Static <head> tags for a /work/<slug> portfolio case study page. */
+export function workCaseStudyHeadTags(project: Project): string {
+  const path = `/work/${project.id}`;
+  const description = `${project.description.en} Designed and built by Galata Studio, live at ${project.url.replace(/^https?:\/\//, '')}.`;
+  const creativeWork = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    '@id': `${SITE_URL}${path}#project`,
+    name: `${project.name} — ${categoryLabelEn[project.category]} Website`,
+    description,
+    url: abs(path),
+    about: project.url,
+    locationCreated: { '@type': 'Place', name: project.city },
+    creator: { '@id': `${SITE_URL}/#business` },
+  };
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Work', item: `${SITE_URL}/#work` },
+      { '@type': 'ListItem', position: 2, name: project.name, item: abs(path) },
+    ],
+  };
+  return baseTags({
+    title: `${project.name} — ${categoryLabelEn[project.category]} Website | ${site.name}`,
+    description,
+    path,
+    jsonLd: [{ ...business, description }, creativeWork, breadcrumb],
   });
 }

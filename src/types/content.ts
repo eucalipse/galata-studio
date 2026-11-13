@@ -17,4 +17,6 @@ export interface Project {
   accent: string;
   layout: 0 | 1 | 2;
   description: Localized;
+  /** Addagio vendor booking slug (addagio.io/book/<slug>) — omitted for projects without a live Addagio integration. */
+  addagioSlug?: string;
 }
