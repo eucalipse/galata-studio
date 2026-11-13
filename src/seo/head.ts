@@ -24,7 +24,6 @@ const business = {
     addressCountry: 'TR',
   },
   areaServed: { '@type': 'Place', name: 'Worldwide' },
-  sameAs: ['https://eucalipse.com'],
 };
 
 function baseTags({

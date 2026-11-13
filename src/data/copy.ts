@@ -140,10 +140,6 @@ const tr = {
     errEmail: 'Geçerli bir e-posta girin',
     errGeneric: 'Bir sorun oluştu. Lütfen tekrar deneyin ya da doğrudan e-posta gönderin.',
   },
-  family: {
-    lead: 'Galata Studio, Eucalipse ailesinin bir parçasıdır.',
-    body: 'Sitenizin arkasında yapay zekâ ajanlarına ihtiyaç duyduğunuzda kardeş stüdyomuz yanınızda.',
-  },
   footer: {
     tagline: 'İstanbul\'da tasarlanır, dünyada yayında.',
     contact: 'İletişim',
@@ -296,10 +292,6 @@ const en: Copy = {
     errRequired: 'This field is required',
     errEmail: 'Enter a valid email',
     errGeneric: 'Something went wrong. Please try again or email us directly.',
-  },
-  family: {
-    lead: 'Galata Studio is part of the Eucalipse family.',
-    body: 'When your site needs AI agents behind it, our sister studio has you covered.',
   },
   footer: {
     tagline: 'Designed in Istanbul, live worldwide.',

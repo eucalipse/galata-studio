@@ -2,7 +2,6 @@ import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Logo } from './Logo';
 import { LanguageSwitch } from './LanguageSwitch';
-import { FamilyNote } from './FamilyNote';
 import { SocialIcon, type SocialName } from './icons/SocialIcon';
 import { ArrowIcon } from './icons/ArrowIcon';
 
@@ -17,7 +16,6 @@ export function Footer({ hideLanguageSwitch = false }: { hideLanguageSwitch?: bo
   const f = t.footer;
   return (
     <footer className="border-t border-line bg-ink">
-      <FamilyNote />
       <div className="shell grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Logo />
